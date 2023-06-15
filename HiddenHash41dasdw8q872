@@ -1668,7 +1668,7 @@ ArmorySection1:AddButton({
 		saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		shoppart()
         task.wait(.7)
-        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Spas-12")
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Spas - 12")
         task.wait(.3)
         game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
     end
@@ -1679,7 +1679,7 @@ ArmorySection1:AddButton({
 		saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		shoppart()
         task.wait(.7)
-        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Scar-H")
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Scar - H")
         task.wait(.3)
         game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
     end
