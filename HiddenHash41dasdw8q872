@@ -1,0 +1,2011 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/DivinityOnTopHidden/DivinityUI/main/UI"))()
+local Wait = library.subs.Wait
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/DivinityOnTopHidden/DivinityNotifier/main/Notifier", true))()
+
+local Window = library:CreateWindow({
+Name = "Divinity",
+Themeable = {}
+})
+
+-- Tables:
+local SCPs = {
+    ["049"] = CFrame.new(602, 40, 48),
+    ["966"] = CFrame.new(656, 40, 47),
+    ["457"] = CFrame.new(603, 40, -43),
+    ["096"] = CFrame.new(663, 40, -123),
+    ["079"] = CFrame.new(565, 25, 189),
+    ["066"] = CFrame.new(296, 40, -106),
+    ["023"] = CFrame.new(244, 40, -162),
+    ["173"] = CFrame.new(386, 53, -119),
+    ["008"] = CFrame.new(537, 40, 388),
+}
+local Areas = {
+    ["Bunker"] = CFrame.new(212, 23, 561),
+    ["Heli"] = CFrame.new(-855, 31, 57),
+    ["Cdc"] = CFrame.new(132, 40, 564),
+    ["CdcTower"] = CFrame.new(16, 54, 438),
+    ["Transformer"] = CFrame.new(-81, 36, 111),
+    ["ControlRoom"] = CFrame.new(23, 33, 132),
+    ["Cafe"] = CFrame.new(-171, 40, 504),
+    ["ShootingRange"] = CFrame.new(-241, 40, 184),
+    ["Secret"] = CFrame.new(-147, 24, -48),
+}
+local Sectors = {
+    ["Sector1"] = CFrame.new(-333, 40, 59),
+    ["Sector2"] = CFrame.new(-350, 40, 58),
+    ["Sector3"] = CFrame.new(583, 40, 145),
+    ["SafeSector"] = CFrame.new(205, 40, 48),
+    ["EuclidSector"] = CFrame.new(285, 40, 5),
+    ["KeterSector"] = CFrame.new(700, 40, -98),
+}
+local Vents = {
+    ["CrVent"] = CFrame.new(-35, 58, 176),
+    ["MaintenanceVent"] = CFrame.new(198, 40, 198),
+    ["EuclidVent"] = CFrame.new(133, 46, -72),
+    ["Sector3Vent"] = CFrame.new(478, 53, 171),
+}
+local Mods = {
+    -- Administrator (1):
+    38152945,
+    -- Project Manager (5):
+    59805053,
+    593881997,
+    81516065,
+    40633391,
+    356976584,
+    -- Head Moderator (3):
+    210254732,
+    241512173,
+    888493,
+    -- Senior Moderator (6):
+    342983833,
+    2542181359,
+    705865451,
+    342324804,
+    66462868,
+    456257112,
+    -- Game Moderator (45):
+    938606828,
+    109314302,
+    4029656796,
+    1608954974,
+    108263192,
+    1471250069,
+    1670837173,
+    1235340217,
+    124271015,
+    87083194,
+    2519157854,
+    196079740,
+    3458875342,
+    2360064370,
+    1003204461,
+    1863251646,
+    1360310217,
+    548470431,
+    1552699369,
+    432714371,
+    914556394,
+    2399853606,
+    240945098,
+    581518081,
+    1112602046,
+    2723679401,
+    1264198657,
+    385534655,
+    660423909,
+    2590281493,
+    512974537,
+    1608051317,
+    939844599,
+    664135242,
+    746566312,
+    336700386,
+    274850137,
+    555392606,
+    1167708161,
+    2010753873,
+    160887871,
+    106374588,
+    94301207,
+    162143140,
+    607285772,
+    -- Trial Moderator (7):
+    106843,
+    3592466816,
+    658172767,
+    296505781,
+    405742210,
+    2398584912,
+    527396508,
+    -- Test Account:
+    4058407231
+}
+-- End Of Tables
+
+-- Extra GUI's:
+local DivinityModGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local SecondFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local Detector = Instance.new("TextLabel")
+local ModMessage = Instance.new("TextLabel")
+local UserText = Instance.new("TextLabel")
+DivinityModGui.Name = "DivinityModGui"
+DivinityModGui.Parent = game.CoreGui
+DivinityModGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = DivinityModGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.Position = UDim2.new(0.0070178872, 0, 0.842274666, 0)
+MainFrame.Size = UDim2.new(0, 279, 0, 131)
+MainFrame.Visible = false
+SecondFrame.Name = "SecondFrame"
+SecondFrame.Parent = MainFrame
+SecondFrame.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+SecondFrame.BorderColor3 = Color3.fromRGB(34, 34, 34)
+SecondFrame.Position = UDim2.new(0.0286738351, 0, 0.0700506568, 0)
+SecondFrame.Size = UDim2.new(0, 263, 0, 114)
+Title.Name = "Title"
+Title.Parent = SecondFrame
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Title.BackgroundTransparency = 1.000
+Title.Position = UDim2.new(0.0224719103, 0, 0, 0)
+Title.Size = UDim2.new(0, 261, 0, 26)
+Title.Font = Enum.Font.Roboto
+Title.Text = "Divinity"
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.TextSize = 15.000
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Detector.Name = "Detector"
+Detector.Parent = SecondFrame
+Detector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Detector.BackgroundTransparency = 1.000
+Detector.Position = UDim2.new(0.00760456268, 0, -0.00660732342, 0)
+Detector.Size = UDim2.new(0, 258, 0, 26)
+Detector.Font = Enum.Font.Roboto
+Detector.Text = "Mod Detector"
+Detector.TextColor3 = Color3.fromRGB(255, 0, 0)
+Detector.TextSize = 15.000
+ModMessage.Name = "ModMessage"
+ModMessage.Parent = SecondFrame
+ModMessage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ModMessage.BackgroundTransparency = 1.000
+ModMessage.Position = UDim2.new(0.095057264, 0, 0.324561417, 0)
+ModMessage.Size = UDim2.new(0, 218, 0, 61)
+ModMessage.Font = Enum.Font.SourceSans
+ModMessage.Text = "A Mod Has Joined:"
+ModMessage.TextColor3 = Color3.fromRGB(255, 0, 0)
+ModMessage.TextSize = 17.000
+ModMessage.TextXAlignment = Enum.TextXAlignment.Left
+UserText.Name = "UserText"
+UserText.Parent = SecondFrame
+UserText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+UserText.BackgroundTransparency = 1.000
+UserText.Position = UDim2.new(0.558935583, 0, 0.324561417, 0)
+UserText.Size = UDim2.new(0, 88, 0, 61)
+UserText.Font = Enum.Font.SourceSans
+UserText.Text = ""
+UserText.TextColor3 = Color3.fromRGB(255, 255, 255)
+UserText.TextSize = 17.000
+UserText.TextXAlignment = Enum.TextXAlignment.Left
+-- End Of Extra GUI's --
+
+-- Functions:
+function promptaura()
+    for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v:IsA("Part") or v:IsA("MeshPart") then
+            if game:GetService("Players").LocalPlayer:DistanceFromCharacter(v.Position) <= 15 then
+                if v:FindFirstChild("ProximityPrompt") then
+                    fireproximityprompt(v.ProximityPrompt,1,true)
+                elseif v:FindFirstChild("InteractionPrompt") then
+                    fireproximityprompt(v.InteractionPrompt,1,true)
+                end
+            end
+        end
+    end
+end
+-- End Of Functions
+
+
+-- Tabs And Windows --
+    -- Character Page
+    local CharacterTab = Window:CreateTab({
+        Name = "Character"
+    })
+    --
+    local CharacterSection1 = CharacterTab:CreateSection({
+        Name = "Visuals"
+    })
+    local CharacterSection2 = CharacterTab:CreateSection({
+        Name = "Infections"
+    })
+    local CharacterSection3 = CharacterTab:CreateSection({
+        Name = "Coloring"
+    })
+    local CharacterSection4 = CharacterTab:CreateSection({
+        Name = "Gameplay"
+    })
+    local CharacterSection5 = CharacterTab:CreateSection({
+        Name = "Fun"
+    })
+    -- Map Tab
+    local MapTab = Window:CreateTab({
+        Name = "Map"
+    })
+    --
+    local MapSection1 = MapTab:CreateSection({
+        Name = "Hack Areas"
+    })
+    local MapSection2 = MapTab:CreateSection({
+        Name = "Breaching"
+    })
+    local MapSection3 = MapTab:CreateSection({
+        Name = "Removers"
+    })
+    -- Teleports Tab --
+    local TeleportTab = Window:CreateTab({
+        Name = "TP"
+    })
+    --
+    local TeleportSection1 = TeleportTab:CreateSection({
+        Name = "SCPs"
+    })   
+    local TeleportSection2 = TeleportTab:CreateSection({
+        Name = "Areas"
+    })
+    local TeleportSection3 = TeleportTab:CreateSection({
+        Name = "Sectors"
+    })    
+    local TeleportSection4 = TeleportTab:CreateSection({
+        Name = "Vents"
+    })  
+    -- Armory Tab --
+    local ArmoryTab = Window:CreateTab({
+        Name = "Armory"
+    })
+    --
+    local ArmorySection1 = ArmoryTab:CreateSection({
+        Name = "Purchase"
+    }) 
+    -- Protection Tab --
+    local ProtectionTab = Window:CreateTab({
+        Name = "Safety"
+    })
+        --
+    local ProtectionSection1 = ProtectionTab:CreateSection({
+        Name = "Protections"
+    })  
+    -- Extra Tab
+    local ExtraTab = Window:CreateTab({
+        Name = "Extra"
+    })
+    --
+    local ExtraSection2 = ExtraTab:CreateSection({
+        Name = "Visuals"
+    })
+    local ExtraSection3 = ExtraTab:CreateSection({
+        Name = "Helpful"
+    })
+    local ExtraSection4 = ExtraTab:CreateSection({
+        Name = "Server"
+    })
+-- End Of Tabs/Windows --
+
+-- Character Tab:
+local BetterNVGs = false
+local BetterNVGs = CharacterSection1:AddToggle({
+    Name = "Better NVG",
+    Callback = function(BetterNVGs)
+        betternvg = BetterNVGs
+end})
+local BetterNVGLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if betternvg then
+        if game:GetService("Players").LocalPlayer.PlayerGui.WeaponUI.NVG.Visible == true then
+            game:GetService("Players").LocalPlayer.PlayerGui.WeaponUI.NVG.Visible = false
+        end
+        game:GetService("Players").LocalPlayer.PlayerGui.WeaponUI.NVG.Visible = false
+        if game:GetService("Lighting").NVG.Enabled == true then
+            game:GetService("Lighting").NVGBlur.Enabled = false
+        end
+    end
+    if not betternvg then
+        if game:GetService("Players").LocalPlayer.PlayerGui.WeaponUI.NVG.Visible == false then
+            game:GetService("Players").LocalPlayer.PlayerGui.WeaponUI.NVG.Visible = true
+        end
+    end
+end)
+--
+CharacterSection2:AddButton({
+    Name = "Infect 008",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(548, 21, 452)}):Play()
+        task.wait(2)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+CharacterSection2:AddButton({
+    Name = "Infect 409",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(734, 44, -25)}):Play()
+        task.wait(2)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+--
+local RainbowOutfit2 = false
+local RainbowOutfit2 = CharacterSection3:AddToggle({
+    Name = "Rainbow Outfit",
+    Callback = function(RainbowOutfit2)
+        rainbowoutfit2 = RainbowOutfit2
+end})
+local RainbowOutfitLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if rainbowoutfit2 then
+        local hue = tick() % 3 / 3
+        game.Players.LocalPlayer.Character.Clothing.Color3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character:GetChildren()[24].Color3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character:GetChildren()[23].Color3 = Color3.fromHSV(hue, 1, 1);
+    end
+    if not rainbowoutfit2 then
+        game.Players.LocalPlayer.Character.Clothing.Color3 = Color3.fromRGB(255,255,255)
+        game.Players.LocalPlayer.Character:GetChildren()[24].Color3 = Color3.fromRGB(255,255,255)
+        game.Players.LocalPlayer.Character:GetChildren()[23].Color3 = Color3.fromRGB(255,255,255)
+    end
+end)
+local RainbowSkin = false
+local RainbowSkin = CharacterSection3:AddToggle({
+    Name = "Rainbow Skin",
+    Callback = function(RainbowSkin)
+        rainbowskin = RainbowSkin
+end})
+local RainbowSkinLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if rainbowskin then
+        local hue = tick() % 3 / 3
+        game.Players.LocalPlayer.Character["Body Colors"].HeadColor3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character["Body Colors"].LeftArmColor3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character["Body Colors"].RightArmColor3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character["Body Colors"].LeftLegColor3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character["Body Colors"].RightLegColor3 = Color3.fromHSV(hue, 1, 1);
+        game.Players.LocalPlayer.Character["Body Colors"].TorsoColor3 = Color3.fromHSV(hue, 1, 1);
+    end
+    if not rainbowskin then
+        game.Players.LocalPlayer.Character["Body Colors"].HeadColor3 = Color3.fromRGB(211, 161, 123)
+        game.Players.LocalPlayer.Character["Body Colors"].LeftArmColor3 = Color3.fromRGB(211, 161, 123)
+        game.Players.LocalPlayer.Character["Body Colors"].RightArmColor3 = Color3.fromRGB(211, 161, 123)
+        game.Players.LocalPlayer.Character["Body Colors"].LeftLegColor3 = Color3.fromRGB(211, 161, 123)
+        game.Players.LocalPlayer.Character["Body Colors"].RightLegColor3 = Color3.fromRGB(211, 161, 123)
+        game.Players.LocalPlayer.Character["Body Colors"].TorsoColor3 = Color3.fromRGB(211, 161, 123)
+    end
+end)
+local RainbowGuns = false
+local RainbowGuns = CharacterSection3:AddToggle({
+    Name = "Rainbow Guns",
+    Callback = function(RainbowGuns)
+        rainbowguns = RainbowGuns
+end})
+local RainbowGunsLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if rainbowguns then
+        local hue = tick() % 3 / 3
+        for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("Tool") then
+                for _,x in pairs(v:GetDescendants()) do
+                    if x:IsA("MeshPart") or x:IsA("Part") then
+                        x.Color = Color3.fromHSV(hue, 1, 1);
+                    end
+                end
+            end
+        end
+    end
+    if not rainbowguns then
+        for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("Tool") then
+                for _,x in pairs(v:GetDescendants()) do
+                    if x:IsA("MeshPart") or x:IsA("Part") then
+                        x.Color = Color3.fromHSV(92, 90, 93);
+                    end
+                end
+            end
+        end
+    end
+end)
+--
+CharacterSection4:AddButton({
+    Name = "Reset Quests",
+    Callback = function()
+        if game.Players.LocalPlayer.Team.Name == "Class - D" then
+            local args = {
+                [1] = {
+                    [1] = "Security Department",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+            task.wait()
+            local args = {
+                [1] = {
+                    [1] = "Class - D",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+        elseif game.Players.LocalPlayer.Team.Name == "Chaos Insurgency" then
+                local args = {
+                    [1] = {
+                        [1] = "Class - D",
+                        [2] = 0,
+                        [3] = false
+                    },
+                    [2] = false,
+                    [3] = false
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+                task.wait()
+                local args = {
+                    [1] = {
+                        [1] = "Chaos Insurgency",
+                        [2] = 0,
+                        [3] = false
+                    },
+                    [2] = false,
+                    [3] = false
+                }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+            
+        elseif game.Players.LocalPlayer.Team.Name == "Security Department" then
+            local args = {
+                [1] = {
+                    [1] = "Class - D",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+            task.wait()
+            local args = {
+                [1] = {
+                    [1] = "Security Department",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+        elseif game.Players.LocalPlayer.Team.Name == "Mobile Task Force" then
+            local args = {
+                [1] = {
+                    [1] = "Class - D",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+            task.wait()
+            local args = {
+                [1] = {
+                    [1] = "Mobile Task Force",
+                    [2] = 0,
+                    [3] = false
+                },
+                [2] = false,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Spawn"):InvokeServer(unpack(args))
+        end        
+    end
+})
+--
+CharacterSection5:AddButton({
+    Name = "Irn Bru Powers (Z,X,C)",
+    Callback = function()
+        wait(0.5)
+        local ver = "1.0"
+        local scriptname = "FEFlip"
+        local FrontflipKey = Enum.KeyCode.Z
+        local BackflipKey = Enum.KeyCode.X
+        local AirjumpKey = Enum.KeyCode.C
+        local ca = game:GetService("ContextActionService")
+        local zeezy = game:GetService("Players").LocalPlayer
+        local h = 0.0174533
+        local antigrav
+        function zeezyFrontflip(act,inp,obj)
+            if inp == Enum.UserInputState.Begin then
+                zeezy.Character.Humanoid:ChangeState("Jumping")
+                wait()
+                zeezy.Character.Humanoid.Sit = true
+                for i = 1,360 do 
+                    delay(i/720,function()
+                    zeezy.Character.Humanoid.Sit = true
+                        zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h,0,0)
+                    end)
+                end
+                wait(0.55)
+                zeezy.Character.Humanoid.Sit = false
+            end
+        end
+        function zeezyBackflip(act,inp,obj)
+            if inp == Enum.UserInputState.Begin then
+                zeezy.Character.Humanoid:ChangeState("Jumping")
+                wait()
+                zeezy.Character.Humanoid.Sit = true
+                for i = 1,360 do
+                    delay(i/720,function()
+                    zeezy.Character.Humanoid.Sit = true
+                        zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(h,0,0)
+                    end)
+                end
+                wait(0.55)
+                zeezy.Character.Humanoid.Sit = false
+            end
+        end
+
+        function zeezyAirjump(act,inp,obj)
+            if inp == Enum.UserInputState.Begin then
+                zeezy.Character:FindFirstChildOfClass'Humanoid':ChangeState("Seated")
+                wait()
+                zeezy.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")	
+            end
+        end
+        ca:BindAction("zeezyFrontflip",zeezyFrontflip,false,FrontflipKey)
+        ca:BindAction("zeezyBackflip",zeezyBackflip,false,BackflipKey)
+        ca:BindAction("zeezyAirjump",zeezyAirjump,false,AirjumpKey)
+        game.StarterGui:SetCore("SendNotification", {Title = "Divinity Flip", Text = "Controls: Z,X,C!", Duration = 5})
+    end
+})
+-- Map Tab:
+MapSection1:AddButton({
+    Name = "Hack Power",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-113.05361938476562, 32.44997024536133, 132.5237579345703)}):Play()
+        task.wait(.5)
+        for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+            if v:IsA("Part") or v:IsA("MeshPart") then
+                if game:GetService("Players").LocalPlayer:DistanceFromCharacter(v.Position) <= 15 then
+                    if v:FindFirstChild("ProximityPrompt") then
+                        fireproximityprompt(v.ProximityPrompt,1,true)
+                    elseif v:FindFirstChild("CIHackDevicePrompt") then
+                        fireproximityprompt(v.CIHackDevicePrompt,1,true)
+                    end
+                end
+            end
+        end
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection1:AddButton({
+    Name = "Hack Control Room",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(3.791124105453491, 37.37456512451172, 153.091552734375)}):Play()
+        task.wait(.5)
+        for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+            if v:IsA("Part") or v:IsA("MeshPart") then
+                if game:GetService("Players").LocalPlayer:DistanceFromCharacter(v.Position) <= 15 then
+                    if v:FindFirstChild("ProximityPrompt") then
+                        fireproximityprompt(v.ProximityPrompt,1,true)
+                    elseif v:FindFirstChild("CIHackDevicePrompt") then
+                        fireproximityprompt(v.CIHackDevicePrompt,1,true)
+                    end
+                end
+            end
+        end
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection1:AddButton({
+    Name = "Hack SCP-008",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(537.079345703125, 40.349979400634766, 388.0810241699219)}):Play()
+        task.wait(.5)
+        for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+            if v:IsA("Part") or v:IsA("MeshPart") then
+                if game:GetService("Players").LocalPlayer:DistanceFromCharacter(v.Position) <= 15 then
+                    if v:FindFirstChild("ProximityPrompt") then
+                        fireproximityprompt(v.ProximityPrompt,1,true)
+                    elseif v:FindFirstChild("CIHackDevicePrompt") then
+                        fireproximityprompt(v.CIHackDevicePrompt,1,true)
+                    end
+                end
+            end
+        end
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+--
+MapSection2:AddButton({
+    Name = "Breach 096",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = game.Workspace.SCPs["SCP-096"]["096"].RootPart.CFrame}):Play()
+        task.wait(3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(204, 41, 196)}):Play()
+    end
+})
+MapSection2:AddButton({
+    Name = "CFrame Breach 096",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = game.Workspace.SCPs["SCP-096"]["096"].RootPart.CFrame}):Play()
+        task.wait(3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection2:AddButton({
+    Name = "Breach 049 - Plague Doctor",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(582.7012329101562, 40.349979400634766, 41.21858215332031)}):Play()
+        task.wait(.5)
+        promptaura()
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(591.1468505859375, 40.3499755859375, 38.18495178222656)}):Play()
+        task.wait(.7)
+        promptaura()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(610.7735595703125, 40.349979400634766, 36.08106231689453)}):Play()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(621.384765625, 40.349979400634766, 52.223148345947266)}):Play()
+        task.wait(.5)
+        promptaura()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection2:AddButton({
+    Name = "Breach 966 - Ghosts",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(663, 40, 58)}):Play()
+        task.wait(.5)
+        promptaura()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(649, 40, 58)}):Play()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(645, 40, 46)}):Play()
+        task.wait(.5)
+        promptaura()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(634, 40, 45)}):Play()
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection2:AddButton({
+    Name = "Breach 066 - Eric's Toy",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(298, 40, -113)}):Play()
+        task.wait(.7)
+        promptaura()
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(302.8701477050781, 40.37498092651367, -99.95365142822266)}):Play()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(296.8782043457031, 40.37498092651367, -99.85182189941406)}):Play()
+        task.wait(2)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(291.4216613769531, 40.37498092651367, -110.5904541015625)}):Play()
+        task.wait(1.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(278.6018981933594, 40.349971771240234, -110.13138580322266)}):Play()
+        task.wait(1)
+        promptaura()
+        task.wait(1.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+MapSection2:AddButton({
+    Name = "Breach 023 - Evil Dog",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(238.9258270263672, 40.38399887084961, -154.44271850585938)}):Play()
+        task.wait(.7)
+        promptaura()
+        task.wait(.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(250.1017303466797, 40.38399887084961, -174.49380493164062)}):Play()
+        task.wait(3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(267.5897216796875, 40.349971771240234, -161.1640625)}):Play()
+        task.wait(.5)
+        promptaura()
+        task.wait(1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(282.3428039550781, 40.349971771240234, -159.2252960205078)}):Play()
+        task.wait(1.5)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+--
+local ToggleCdcGlass = false
+local ToggleCdcGlass = MapSection3:AddToggle({
+    Name = "Toggle CDC Tower Glass",
+    Callback = function(ToggleCdcGlass)
+        togglecdcglass = ToggleCdcGlass
+    if togglecdcglass then
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v.Name == "CDCInvisibleParts" then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(21.7980118, 64.3996048, 473.020752, -1, 0, -0, 0, 0, -1, 0, -1, -0) then
+                    v.Parent = game.Lighting
+                end
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(10.7295303, 57.4499741, 423.218628) then
+                    v.Parent = game.Lighting
+                end
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(31.7795181, 57.4499741, 423.218628) then
+                    v.Parent = game.Lighting
+                end
+            end
+        end
+    elseif not togglecdcglass then
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v.Name == "CDCInvisibleParts" then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(21.7980118, 64.3996048, 473.020752, -1, 0, -0, 0, 0, -1, 0, -1, -0) then
+                    v.Parent = game.Workspace
+                end
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(10.7295303, 57.4499741, 423.218628) then
+                    v.Parent = game.Workspace
+                end
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") then
+                if v.CFrame == CFrame.new(31.7795181, 57.4499741, 423.218628) then
+                    v.Parent = game.Workspace
+                end
+            end
+        end
+    end
+end})
+local ToggleDoors = false
+local ToggleDoors = MapSection3:AddToggle({
+    Name = "Toggle Doors",
+    Callback = function(ToggleDoors)
+        toggledoors = ToggleDoors
+    if toggledoors then
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Model") then
+                if v.Name == "Gate" or v.Name == "Transparent Door" or v.Name == "Linked Door" or v.Name == "Double Gate" or v.Name == "Heavy Door" then
+                    v.Parent = game.Lighting
+                end
+            end
+        end
+    elseif not toggledoors then
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Model") then
+                if v.Name == "Gate" or v.Name == "Transparent Door" or v.Name == "Linked Door" or v.Name == "Double Gate" or v.Name == "Heavy Door" then
+                    v.Parent = game.Workspace
+                end
+            end
+        end
+    end
+end})
+local ToggleNightSky = false
+local ToggleNightSky = MapSection3:AddToggle({
+    Name = "Toggle Night Sky",
+    Callback = function(ToggleNightSky)
+        togglenightsky = ToggleNightSky
+    if togglenightsky then
+        game.Lighting.Sky.Parent = game
+    elseif not togglenightsky then
+        game.Sky.Parent = game.Lighting
+    end
+end})
+MapSection3:AddButton({
+    Name = "Under Map Troll (1 Time Use)",
+    Callback = function()
+        if workspace:FindFirstChild("Alarms") then
+            workspace.Alarms:Destroy()
+        end
+        if workspace:FindFirstChild("Cameras") then
+            workspace.Cameras:Destroy()
+        end
+        if workspace:FindFirstChild("Chaos Insurgency") then
+            workspace["Chaos Insurgency"]:Destroy()
+        end
+        if workspace:FindFirstChild("Leaderboards") then
+            workspace.Leaderboards:Destroy()
+        end
+        if workspace:FindFirstChild("Lights") then
+            workspace.Lights:Destroy()
+        end
+        if workspace:FindFirstChild("S3EasterEgg") then
+            workspace.S3EasterEgg:Destroy()
+        end
+        if workspace:FindFirstChild("Sector 1") then
+            workspace["Sector 1"]:Destroy()
+        end
+        if workspace:FindFirstChild("Sector 2") then
+            workspace["Sector 2"]:Destroy()
+        end
+        task.wait(.3)
+        if workspace:FindFirstChild("PlatformPart") then
+            workspace.PlatformPart:Destroy()
+        end
+        if workspace:FindFirstChild("Medical Sector") then
+            workspace["Medical Sector"]:Destroy()
+        end
+        if workspace:FindFirstChild("PlatformPart") then
+            workspace.PlatformPart:Destroy()
+        end
+        local PlatformPart = Instance.new("Part")
+        PlatformPart.Name = "PlatformPart"
+        PlatformPart.Anchored = true
+        PlatformPart.Size = Vector3.new(100000,1,100000)
+        PlatformPart.Transparency = 0.6
+        PlatformPart.Material = "Glass"
+        PlatformPart.Color = Color3.fromRGB(255,255,255)
+        PlatformPart.Parent = workspace
+        PlatformPart.CFrame = CFrame.new(-325.400055, 22.8499756, 58.1252441)
+        task.wait(.1)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(135.69602966308594, 40.349971771240234, 198.89761352539062)}):Play()
+        game.Lighting.Sky:Destroy()
+        game:GetService("Workspace")["Class-D Cells"]:Destroy()
+    end
+})
+local ToggleUnderMap = false
+local ToggleUnderMap = MapSection3:AddToggle({
+    Name = "Toggle Under Map Troll",
+    Callback = function(ToggleUnderMap)
+        toggleundermap = ToggleUnderMap
+    if toggleundermap then
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Cdc"]}):Play()
+        task.wait(.7)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["Sector3"]}):Play()
+        task.wait(.7)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["ShootingRange"]}):Play()
+        task.wait(1)
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.CFrame == CFrame.new(-28.5228271, 84.3499832, 256.77832) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-21.9203434, 79.5874863, 256.750854) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-77.077301, 36.8499756, 223.880615) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(16.8476601, 36.8499756, 236.618103) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-13.1523438, 36.8499756, 271.693115) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-28.5188904, 34.8499756, 235.057495) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-13.118927, 34.8499756, 261.58252) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(30.1846085, 36.8499756, 299.305542) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(57.6476059, 36.849968, 363.067139) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(97.3850937, 36.849968, 316.317139) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(114.497543, 36.8499756, 283.143066) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(3.67264509, 36.849968, 515.892273) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(20.5726395, 36.849968, 427.692261) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(199.220459, 36.8499756, 283.137329) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(143.655487, 36.8499756, 240.423233) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(164.222534, 36.8499756, 261.655579) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(17.7976646, 36.8499756, 194.080612) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-153.127197, 36.8499756, 188.34314) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-241.09761, 36.8499756, 154.765656) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, 150.065674) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-215.974182, 36.8499756, 319.358154) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-211.186142, 36.9250031, 340.529114) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-98.401001, 36.8499756, 319.375854) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-43.0849609, 36.8499756, 319.375854) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-6.67736816, 36.8499756, 311.493042) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(236.217987, 36.8499756, 206.623245) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(274.397827, 36.8499756, 152.194092) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(236.217987, 36.8499756, 87.798233) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(327.372803, 36.8499756, 150.994141) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(485.411652, 36.8499832, 150.262268) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(630.873962, 36.8499832, 26.0740356) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(735.712585, 36.8499832, -97.7248535) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(237.805466, 36.8499756, 3.8215332) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(182.505478, 36.8499756, 5.2839613) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(207.680481, 36.8499756, 47.2214546) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(287.017944, 36.8499756, 3.43403244) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(361.130493, 36.8499756, 4.02153301) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(351.230469, 36.8499756, -78.6209717) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(322.517975, 36.8499756, -161.315964) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(270.780487, 36.8499756, -86.5909653) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(198.342499, 36.8499908, 208.765381) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-87.100029, 33.0999756, 151.225113) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-257.342834, 36.8499756, 57.4072266) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-325.400055, 36.8499756, 58.1252441) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-358.612488, 36.7125015, 60.592495) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-435.950745, 36.7125015, -36.9451828) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-552.874939, 36.7125015, 60.092495) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(217.107986, 36.8499756, 320.774872) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, -23.5093994) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-194.91011, 36.8499756, -48.4843979) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, -98.9844055) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-153.275055, 36.8499756, -128.774902) then
+                v.Parent = game.Lighting
+            end
+        end
+        task.wait(.7)
+        if workspace:FindFirstChild("PlatformPart") then
+            workspace.PlatformPart:Destroy()
+        end
+        local PlatformPart = Instance.new("Part")
+        PlatformPart.Name = "PlatformPart"
+        PlatformPart.Anchored = true
+        PlatformPart.Size = Vector3.new(100000,1,100000)
+        PlatformPart.Transparency = 0.6
+        PlatformPart.Material = "Glass"
+        PlatformPart.Color = Color3.fromRGB(255,255,255)
+        PlatformPart.Parent = workspace
+        PlatformPart.CFrame = CFrame.new(-325.400055, 22.8499756, 58.1252441)
+    elseif not toggleundermap then
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.CFrame == CFrame.new(-28.5228271, 84.3499832, 256.77832) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-21.9203434, 79.5874863, 256.750854) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-77.077301, 36.8499756, 223.880615) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(16.8476601, 36.8499756, 236.618103) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-13.1523438, 36.8499756, 271.693115) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-28.5188904, 34.8499756, 235.057495) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-13.118927, 34.8499756, 261.58252) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(30.1846085, 36.8499756, 299.305542) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(57.6476059, 36.849968, 363.067139) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(97.3850937, 36.849968, 316.317139) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(114.497543, 36.8499756, 283.143066) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(3.67264509, 36.849968, 515.892273) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(20.5726395, 36.849968, 427.692261) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(199.220459, 36.8499756, 283.137329) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(143.655487, 36.8499756, 240.423233) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(164.222534, 36.8499756, 261.655579) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(17.7976646, 36.8499756, 194.080612) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-153.127197, 36.8499756, 188.34314) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-241.09761, 36.8499756, 154.765656) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, 150.065674) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-215.974182, 36.8499756, 319.358154) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-211.186142, 36.9250031, 340.529114) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-98.401001, 36.8499756, 319.375854) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-43.0849609, 36.8499756, 319.375854) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-6.67736816, 36.8499756, 311.493042) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(236.217987, 36.8499756, 206.623245) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(274.397827, 36.8499756, 152.194092) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(236.217987, 36.8499756, 87.798233) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(327.372803, 36.8499756, 150.994141) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(485.411652, 36.8499832, 150.262268) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(630.873962, 36.8499832, 26.0740356) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(735.712585, 36.8499832, -97.7248535) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(237.805466, 36.8499756, 3.8215332) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(182.505478, 36.8499756, 5.2839613) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(207.680481, 36.8499756, 47.2214546) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(287.017944, 36.8499756, 3.43403244) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(361.130493, 36.8499756, 4.02153301) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(351.230469, 36.8499756, -78.6209717) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(322.517975, 36.8499756, -161.315964) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(270.780487, 36.8499756, -86.5909653) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(198.342499, 36.8499908, 208.765381) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-87.100029, 33.0999756, 151.225113) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-257.342834, 36.8499756, 57.4072266) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-325.400055, 36.8499756, 58.1252441) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-358.612488, 36.7125015, 60.592495) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-435.950745, 36.7125015, -36.9451828) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-552.874939, 36.7125015, 60.092495) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(217.107986, 36.8499756, 320.774872) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, -23.5093994) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-194.91011, 36.8499756, -48.4843979) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-191.485107, 36.8499756, -98.9844055) then
+                v.Parent = game.Workspace
+            end
+        end
+        for _,v in pairs(game.Lighting:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(-153.275055, 36.8499756, -128.774902) then
+                v.Parent = game.Workspace
+            end
+        end
+        task.wait(3)
+        if workspace:FindFirstChild("PlatformPart") then
+            workspace.PlatformPart:Destroy()
+        end
+    end
+end})
+-- Teleports Tab:
+-- SCP Teleports:
+TeleportSection1:AddButton({
+    Name = "049 - Plague Doctor",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["049"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "966 - Ghosts",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["966"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "457 - Burning Man",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["457"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "096 - Shy Guy",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["096"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "079 - Sentient Computer",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["079"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "066 - Eric's Toy",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["066"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "023 - Evil Dog",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["023"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "173 - The Statue",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["173"]}):Play()
+    end
+})
+TeleportSection1:AddButton({
+    Name = "008 - Contagious Gas",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = SCPs["008"]}):Play()
+    end
+})
+-- Area Teleports:
+TeleportSection2:AddButton({
+    Name = "Bunker",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Bunker"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Heli",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Heli"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "CDC",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Cdc"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "CDC Tower",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["CdcTower"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Transformer",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Transformer"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Control Room",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["ControlRoom"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Cafeteria",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Cafe"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Shooting Range",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["ShootingRange"]}):Play()
+    end
+})
+TeleportSection2:AddButton({
+    Name = "Secret Room",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Areas["Secret"]}):Play()
+    end
+})
+-- Sector Teleports:
+TeleportSection3:AddButton({
+    Name = "Sector 1",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["Sector1"]}):Play()
+    end
+})
+TeleportSection3:AddButton({
+    Name = "Sector 2",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["Sector2"]}):Play()
+    end
+})
+TeleportSection3:AddButton({
+    Name = "Sector 3",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["Sector3"]}):Play()
+    end
+})
+TeleportSection3:AddButton({
+    Name = "Safe Sector",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["SafeSector"]}):Play()
+    end
+})
+TeleportSection3:AddButton({
+    Name = "Euclid Sector",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["EuclidSector"]}):Play()
+    end
+})
+TeleportSection3:AddButton({
+    Name = "Keter Sector",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Sectors["KeterSector"]}):Play()
+    end
+})
+-- Vent Teleports:
+TeleportSection4:AddButton({
+    Name = "Control Room Vent",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Vents["CrVent"]}):Play()
+    end
+})
+TeleportSection4:AddButton({
+    Name = "Maintenance Vent",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Vents["MaintenanceVent"]}):Play()
+    end
+})
+TeleportSection4:AddButton({
+    Name = "Euclid Vent",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Vents["EuclidVent"]}):Play()
+    end
+})
+TeleportSection4:AddButton({
+    Name = "Sector 3 Vent",
+    Callback = function()
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = Vents["Sector3Vent"]}):Play()
+    end
+})
+--
+-- Armory Tab:
+ArmorySection1:AddButton({
+    Name = "Vest [3 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Vest")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+ArmorySection1:AddButton({
+    Name = "Glock 17 [5 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Glock 17")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+ArmorySection1:AddButton({
+    Name = "Kriss Vector [10 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Kriss Vector")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+ArmorySection1:AddButton({
+    Name = "Spas-12 [10 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Spas-12")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+ArmorySection1:AddButton({
+    Name = "Scar-H [15 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Scar-H")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+ArmorySection1:AddButton({
+    Name = "Nuke [1500 Credits]",
+    Callback = function()
+        saved = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-77, 40, 463)}):Play()
+        task.wait(.7)
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Jerry"):FireServer("Nuke")
+        task.wait(.3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = saved}):Play()
+    end
+})
+-- Protection Tab:
+local AntiMod = false
+local AntiMod = ProtectionSection1:AddToggle({
+    Name = "Anti-Mod Joining",
+    Callback = function(AntiMod)
+        antimod = AntiMod
+end})
+local AntiModLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if antimod then
+        for _,v in pairs(game.Players:GetPlayers()) do
+            if table.find(Mods, v.UserId) then
+                game.Players.LocalPlayer:Kick("Avoided Mod: "..v.Name)
+            end
+        end
+    end
+end)
+local DetectMods = false
+local DetectMods = ProtectionSection1:AddToggle({
+    Name = "Notify On Mod Join",
+    Callback = function(DetectMods)
+        detectmods = DetectMods
+end})
+local DetectModLoop = game:GetService("RunService").RenderStepped:Connect(function()
+    if detectmods then
+        for _,v in pairs(game.Players:GetPlayers()) do
+            if table.find(Mods, v.UserId) then
+                game.CoreGui.DivinityModGui.MainFrame.Visible = true
+                game.CoreGui.DivinityModGui.MainFrame.SecondFrame.UserText.Text = v.Name
+                wait(3)
+                game.CoreGui.DivinityModGui.MainFrame.Visible = false
+            end
+        end
+    end
+end)
+-- Extra Tab:
+local XRay = false
+local XRay = ExtraSection2:AddToggle({
+    Name = "X-Ray",
+    Callback = function(XRay)
+        xray = XRay
+        if xray then
+        local transparent = false
+        function x(v)
+            if v then
+                for _,i in pairs(workspace:GetDescendants()) do
+                    if i:IsA("BasePart") and not i.Parent:FindFirstChildOfClass('Humanoid') and not i.Parent.Parent:FindFirstChildOfClass('Humanoid') then
+                        i.LocalTransparencyModifier = 0.8
+                    end
+                end
+            else
+                for _,i in pairs(workspace:GetDescendants()) do
+                    if i:IsA("BasePart") and not i.Parent:FindFirstChildOfClass('Humanoid') and not i.Parent.Parent:FindFirstChildOfClass('Humanoid') then
+                        i.LocalTransparencyModifier = 0
+                    end
+                end
+            end
+        end
+        transparent = true
+        x(transparent)
+    elseif not xray then
+        local transparent = false
+        function x(v)
+            if v then
+                for _,i in pairs(workspace:GetDescendants()) do
+                    if i:IsA("BasePart") and not i.Parent:FindFirstChildOfClass('Humanoid') and not i.Parent.Parent:FindFirstChildOfClass('Humanoid') then
+                        i.LocalTransparencyModifier = 0.8
+                    end
+                end
+            else
+                for _,i in pairs(workspace:GetDescendants()) do
+                    if i:IsA("BasePart") and not i.Parent:FindFirstChildOfClass('Humanoid') and not i.Parent.Parent:FindFirstChildOfClass('Humanoid') then
+                        i.LocalTransparencyModifier = 0
+                    end
+                end
+            end
+        end
+        transparent = false
+        x(transparent)
+    end
+end})
+local FullBright = false
+local FullBright = ExtraSection2:AddToggle({
+    Name = "Fullbright",
+    Callback = function(FullBright)
+        fullbright = FullBright
+    if fullbright then
+        if not _G.FullBrightExecuted then
+
+            _G.FullBrightEnabled = false
+        
+            _G.NormalLightingSettings = {
+                Brightness = game:GetService("Lighting").Brightness,
+                ClockTime = game:GetService("Lighting").ClockTime,
+                FogEnd = game:GetService("Lighting").FogEnd,
+                GlobalShadows = game:GetService("Lighting").GlobalShadows,
+                Ambient = game:GetService("Lighting").Ambient
+            }
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+                if game:GetService("Lighting").Brightness ~= 1 and game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness then
+                    _G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Brightness = 1
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+                if game:GetService("Lighting").ClockTime ~= 12 and game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime then
+                    _G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").ClockTime = 12
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+                if game:GetService("Lighting").FogEnd ~= 786543 and game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd then
+                    _G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").FogEnd = 786543
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+                if game:GetService("Lighting").GlobalShadows ~= false and game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows then
+                    _G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").GlobalShadows = false
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+                if game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient then
+                    _G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                end
+            end)
+        
+            game:GetService("Lighting").Brightness = 1
+            game:GetService("Lighting").ClockTime = 12
+            game:GetService("Lighting").FogEnd = 786543
+            game:GetService("Lighting").GlobalShadows = false
+            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+        
+            local LatestValue = true
+            spawn(function()
+                repeat
+                    wait()
+                until _G.FullBrightEnabled
+                while wait() do
+                    if _G.FullBrightEnabled ~= LatestValue then
+                        if not _G.FullBrightEnabled then
+                            game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
+                            game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
+                            game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
+                            game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+                            game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
+                        else
+                            game:GetService("Lighting").Brightness = 1
+                            game:GetService("Lighting").ClockTime = 12
+                            game:GetService("Lighting").FogEnd = 786543
+                            game:GetService("Lighting").GlobalShadows = false
+                            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                        end
+                        LatestValue = not LatestValue
+                    end
+                end
+            end)
+        end
+        
+        _G.FullBrightExecuted = true
+        _G.FullBrightEnabled = not _G.FullBrightEnabled
+    elseif not fullbright then
+        if not _G.FullBrightExecuted then
+
+            _G.FullBrightEnabled = false
+        
+            _G.NormalLightingSettings = {
+                Brightness = game:GetService("Lighting").Brightness,
+                ClockTime = game:GetService("Lighting").ClockTime,
+                FogEnd = game:GetService("Lighting").FogEnd,
+                GlobalShadows = game:GetService("Lighting").GlobalShadows,
+                Ambient = game:GetService("Lighting").Ambient
+            }
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+                if game:GetService("Lighting").Brightness ~= 1 and game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness then
+                    _G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Brightness = 1
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+                if game:GetService("Lighting").ClockTime ~= 12 and game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime then
+                    _G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").ClockTime = 12
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+                if game:GetService("Lighting").FogEnd ~= 786543 and game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd then
+                    _G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").FogEnd = 786543
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+                if game:GetService("Lighting").GlobalShadows ~= false and game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows then
+                    _G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").GlobalShadows = false
+                end
+            end)
+        
+            game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+                if game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient then
+                    _G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                end
+            end)
+        
+            game:GetService("Lighting").Brightness = 1
+            game:GetService("Lighting").ClockTime = 12
+            game:GetService("Lighting").FogEnd = 786543
+            game:GetService("Lighting").GlobalShadows = false
+            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+        
+            local LatestValue = true
+            spawn(function()
+                repeat
+                    wait()
+                until _G.FullBrightEnabled
+                while wait() do
+                    if _G.FullBrightEnabled ~= LatestValue then
+                        if not _G.FullBrightEnabled then
+                            game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
+                            game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
+                            game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
+                            game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+                            game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
+                        else
+                            game:GetService("Lighting").Brightness = 1
+                            game:GetService("Lighting").ClockTime = 12
+                            game:GetService("Lighting").FogEnd = 786543
+                            game:GetService("Lighting").GlobalShadows = false
+                            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                        end
+                        LatestValue = not LatestValue
+                    end
+                end
+            end)
+        end
+        
+        _G.FullBrightExecuted = false
+        _G.FullBrightEnabled = not _G.FullBrightEnabled
+    end
+end})
+--
+ExtraSection3:AddButton({
+    Name = "Copy Position",
+    Callback = function()
+        if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            setclipboard(tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.Position))
+        elseif not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            setclipboard(tostring(game.Players.LocalPlayer.Character.Torso.Position))
+        end
+    end
+})
+--
+ExtraSection4:AddButton({
+    Name = "Copy Join Link",
+    Callback = function()
+        setclipboard(("game:GetService\"TeleportService\":TeleportToPlaceInstance(%i, \"%s\")"):format(game.PlaceId, game.JobId))
+    end
+})
+ExtraSection4:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+    end
+})
+ExtraSection4:AddButton({
+    Name = "Server Hop",
+    Callback = function()
+        local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/".. game.PlaceId.. "/servers/Public?sortOrder=Asc&limit=100"))
+        for i,v in pairs(Servers.data) do
+            if v.playing ~= v.maxPlayers then
+                game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
+            end
+        end
+    end
+})
+
+local notif = Notification.new("success", "Divinity Notification", "Script Status: Active")
+task.wait(3)
+notif:deleteTimeout(1)
+notif:delete()
