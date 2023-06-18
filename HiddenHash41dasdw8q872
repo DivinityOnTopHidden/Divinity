@@ -29,7 +29,6 @@ local Areas = {
     ["Cafe"] = CFrame.new(-171, 40, 504),
     ["ShootingRange"] = CFrame.new(-241, 40, 184),
     ["Secret"] = CFrame.new(-147, 24, -48),
-    ["Kill Farm"] = CFrame.new(-318, 26, -121),
     ["The Living Room"] = CFrame.new(324, 40, -977),
     ["Kill Farm"] = CFrame.new(-317, 26, -94),
 }
