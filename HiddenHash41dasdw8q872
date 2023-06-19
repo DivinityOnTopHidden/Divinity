@@ -1002,16 +1002,6 @@ local ToggleUnderMap = MapSection3:AddToggle({
             end
         end
         for _,v in pairs(workspace:GetDescendants()) do
-            if v:IsA("Part") and v.Position == Vector3.new(3.67264509, 36.849968, 515.892273) then
-                v.Parent = game.Lighting
-            end
-        end
-        for _,v in pairs(workspace:GetDescendants()) do
-            if v:IsA("Part") and v.Position == Vector3.new(20.5726395, 36.849968, 427.692261) then
-                v.Parent = game.Lighting
-            end
-        end
-        for _,v in pairs(workspace:GetDescendants()) do
             if v:IsA("Part") and v.Position == Vector3.new(199.220459, 36.8499756, 283.137329) then
                 v.Parent = game.Lighting
             end
@@ -1203,6 +1193,19 @@ local ToggleUnderMap = MapSection3:AddToggle({
         end
         for _,v in pairs(workspace:GetDescendants()) do
             if v:IsA("Part") and v.Position == Vector3.new(-153.275055, 36.8499756, -128.774902) then
+                v.Parent = game.Lighting
+            end
+        end
+        task.wait(3)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(-14, 26, 364)}):Play()
+        task.wait(1)
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(20.5726395, 36.849968, 427.692261) then
+                v.Parent = game.Lighting
+            end
+        end
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Position == Vector3.new(3.67264509, 36.849968, 515.892273) then
                 v.Parent = game.Lighting
             end
         end
